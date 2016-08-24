@@ -1,25 +1,25 @@
-# Writting experiments
+# Writing experiments
 
-An experiment is a Python file that exposes, in its main namespace, two types of
-functions: _tasks_ and _runners_. iCE provides with some annotations to let 
-user define the type of a function. 
+An experiment is a Python file that exposes, in its main namespace, two types
+of functions: _tasks_ and _runners_. iCE provides with some annotations to let
+user define the type of a function.
 
-The experiment files call the [Fabric](http://www.fabfile.org/) API. 
-The Fabric API can enable experiment functions to:
+The experiment files call the [Fabric](http://www.fabfile.org/) API. The Fabric
+API can enable experiment functions to:
 
 * Transfer files between instance and host
 * Execute local or remote shell commands
 * _For runners_ Run tasks
 
 iCE from Fabric's perspective is just a tool to facilitate the execution of
-Fabric tasks for cloud experiments. Hence, the reader is encouraged to read 
-through the excelent [Fabric docs](http://docs.fabfile.org) for more 
+Fabric tasks for cloud experiments. Hence, the reader is encouraged to read
+through the excellent [Fabric docs](http://docs.fabfile.org) for more
 information on how to use the Fabric APIs.
 
 ## Task
 
-A task is a function that runs for each host (instance) of the experiment.
-It receives the list of hostnames as the first argument and can have additional,
+A task is a function that runs for each host (instance) of the experiment.  It
+receives the list of hostnames as the first argument and can have additional,
 arbitrary, arguments.
 
 Following example shows how to print the hostname of the instance the task will
@@ -73,7 +73,7 @@ To do so use the `@ice.ParallelTask` annotation instead.
 ## Runner
 
 A runner is an iCE concept that can act as an orchestrator between different
-iCE/Fabric tasks. They receive the list of hostnames (same as tasks). However 
+iCE/Fabric tasks. They receive the list of hostnames (same as tasks). However
 they don't run per-instance (as tasks do).
 
 The following example uses the `execute` method of fabric to run `stop_server`
@@ -99,5 +99,11 @@ def run(hosts):
 ```
 
 iCE can pass additional arguments to runners, similarly to the way its done for
-tasks. Finally if a user runs an iCE experiment without specifying the task/runner
-name to execute, it will look for a `run` runner.
+tasks. Finally if a user runs an iCE experiment without specifying the
+task/runner name to execute, it will look for a `run` runner.
+
+### Parallel runners
+
+The user can enable parallel execution of every Fabric operation made within a
+parallel runner. To do so use the `@ice.ParallelRunner` annotation instead of
+the `Runner`.
