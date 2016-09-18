@@ -18,9 +18,9 @@ information on how to use the Fabric APIs.
 
 ## Task
 
-A task is a function that runs for each host (instance) of the experiment.  It
-receives the list of hostnames as the first argument and can have additional,
-arbitrary, arguments.
+A task is a function that runs for each instance of the experiment. It receives
+the list of `entities.Instance` objects as the first argument and can have
+additional, arbitrary, arguments.
 
 Following example shows how to print the hostname of the instance the task will
 run into:
@@ -30,7 +30,7 @@ import fabric.api as fab
 import ice
 
 @ice.Task
-def print_hostname(hosts, prefix=''):
+def print_hostname(instances, prefix=''):
     print '%s%s' % (prefix, fab.env.host_string)
 ```
 
@@ -47,7 +47,7 @@ import fabric.api as fab
 import ice
 
 @ice.Task
-def change_apache_port(hosts, port='8080'):
+def change_apache_port(instances, port='8080'):
     # Download Apache configuration file
     old_file = StringIO.StringIO()
     fab.get(remote_path='/etc/apache2/ports.conf', local_path=old_file)
@@ -73,8 +73,8 @@ To do so use the `@ice.ParallelTask` annotation instead.
 ## Runner
 
 A runner is an iCE concept that can act as an orchestrator between different
-iCE/Fabric tasks. They receive the list of hostnames (same as tasks). However
-they don't run per-instance (as tasks do).
+iCE/Fabric tasks. They receive the list of `entities.Instance` objects (same as
+tasks). However they don't run per-instance (as tasks do).
 
 The following example uses the `execute` method of fabric to run `stop_server`
 in a randomly selected subset of the instances:
@@ -85,16 +85,16 @@ import fabric.api as fab
 import ice
 
 @ice.Task
-def stop_server(hosts):
+def stop_server(instances):
     # ....
     pass
 
 @ice.Runner
-def run(hosts):
+def run(instances):
     failing_hosts = []
-    for host in hosts:
+    for inst in instances:
         if bool(random.getrandbits(1)):
-            failing_hosts.append(host)
+            failing_hosts.append(inst.get_host_string())
     fab.execute(stop_server, hosts=failing_hosts)
 ```
 
