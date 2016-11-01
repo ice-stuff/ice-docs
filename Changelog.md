@@ -2,7 +2,7 @@
 
 The entries bellow are in reverse chronological order.
 
-## v2.1.0 (WIP)
+## v2.1.0 (01 November 2016)
 
 * `sess_cd`, `sess_release` and `sess_retain` shell commands are promoted and
   can now be used in normal mode. They were only available in debug mode
@@ -16,6 +16,7 @@ The entries bellow are in reverse chronological order.
   strings list.
 * Replace the awkward `./ice-register-self.py` script with the `ice-agent`
   project maintained in https://github.com/glestaris/ice-agent.
+* Instance can support tags. `exp_run` and `ec2_create` support instance tags.
 
 ## v2.0.0 (19 September 2015)
 
